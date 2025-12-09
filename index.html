@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMU Data Visualizer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/p5@2.1.1/lib/p5.min.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div id="sections-grid">
+            
+            <!-- Section 1: IMU Orientation -->
+            <section class="viz-section" data-section-id="0">
+                <div class="section-header">
+                    <input type="text" class="section-title" value="IMU Orientation" placeholder="Section Title">
+                    <div class="header-buttons">
+                        <button class="delete-btn">x</button>
+                        <button class="collapse-btn">-</button>
+                    </div>
+                </div>
+                
+                <div class="section-content">
+                    <div class="controls">
+                        <button class="play-btn">Play</button>
+                        <button class="reset-btn">Reset</button>
+                    </div>
+                    
+                    <div class="info-display">
+                        <div class="value-box vx">X: <span class="valX">--</span></div>
+                        <div class="value-box vy">Y: <span class="valY">--</span></div>
+                        <div class="value-box vz">Z: <span class="valZ">--</span></div>
+                        <div class="value-box vt">T: <span class="valTime">--</span></div>
+                    </div>
+                    
+                    <div class="canvas-container"></div>
+                    
+                    <div class="legend">
+                        <span><span class="legend-color" style="background:#ff6464;"></span>X</span>
+                        <span><span class="legend-color" style="background:#64c8c8;"></span>Y</span>
+                        <span><span class="legend-color" style="background:#ffe664;"></span>Z</span>
+                    </div>
+                    
+                    <div class="data-input">
+                        <h4>Paste Serial Data</h4>
+                        <textarea class="serial-data" placeholder="15:56:37.663 -> X: 215.3125	Y: 6.8750	Z: -5.0625"></textarea>
+                        <div class="input-buttons">
+                            <button class="parse-btn">Load Data</button>
+                            <button class="clear-btn">Clear</button>
+                        </div>
+                        <div class="parse-status"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Add Section Button -->
+            <div class="add-section-slot">
+                <button class="add-section-btn">+</button>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script src="sketch.js"></script>
+</body>
+</html>

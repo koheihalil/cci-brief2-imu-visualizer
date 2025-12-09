@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: monospace;
+    background: #000;
+    color: #fff;
+    padding: 15px;
+}
+
+#app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+#sections-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* Section */
+.viz-section {
+    background: #000;
+    border: 1px solid #666;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #000;
+    border-bottom: 1px solid #666;
+}
+
+.section-title {
+    background: #000;
+    border: 1px solid #666;
+    color: #fff;
+    font-size: 13px;
+    font-family: monospace;
+    flex: 1;
+    padding: 4px 8px;
+}
+
+.section-title:focus {
+    outline: 1px solid #fff;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.collapse-btn, .delete-btn {
+    background: #000;
+    border: 1px solid #666;
+    color: #fff;
+    font-size: 14px;
+    font-family: monospace;
+    cursor: pointer;
+    padding: 2px 8px;
+}
+
+.collapse-btn:hover, .delete-btn:hover {
+    border-color: #fff;
+}
+
+.section-content {
+    padding: 12px;
+}
+
+.section-content.collapsed {
+    display: none;
+}
+
+/* Controls */
+.controls {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.controls button {
+    padding: 6px 14px;
+    margin: 3px;
+    font-size: 12px;
+    font-family: monospace;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+.controls button:hover {
+    border-color: #fff;
+}
+
+/* Values */
+.info-display {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    font-family: monospace;
+    flex-wrap: wrap;
+}
+
+.value-box {
+    padding: 4px 8px;
+    background: #000;
+    border: 1px solid #666;
+}
+
+.value-box.vx { color: #ff6464; }
+.value-box.vy { color: #64c8c8; }
+.value-box.vz { color: #ffe664; }
+.value-box.vt { color: #888; }
+
+/* Canvas */
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+    min-height: 200px;
+}
+
+/* Legend */
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 8px 0;
+    font-size: 11px;
+    color: #aaa;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+    border: 1px solid currentColor;
+}
+
+/* Data Input */
+.data-input {
+    margin-top: 10px;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #666;
+}
+
+.data-input h4 {
+    margin-bottom: 8px;
+    color: #888;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.data-input textarea {
+    width: 100%;
+    height: 60px;
+    padding: 8px;
+    font-family: monospace;
+    font-size: 10px;
+    background: #000;
+    color: #ddd;
+    border: 1px solid #666;
+    resize: vertical;
+}
+
+.data-input textarea:focus {
+    outline: 1px solid #fff;
+}
+
+.data-input textarea::placeholder {
+    color: #555;
+}
+
+.input-buttons {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.input-buttons button {
+    padding: 5px 12px;
+    font-size: 11px;
+    font-family: monospace;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+.input-buttons button:hover {
+    border-color: #fff;
+}
+
+.parse-status {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #888;
+}
+
+/* Add Section */
+.add-section-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    background: #000;
+    border: 1px solid #666;
+}
+
+.add-section-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+    font-family: monospace;
+    background: #000;
+    color: #fff;
+    border: 1px solid #666;
+    cursor: pointer;
+}
+
+.add-section-btn:hover {
+    border-color: #fff;
+}
