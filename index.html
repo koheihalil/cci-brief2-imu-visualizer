@@ -22,34 +22,71 @@
                 </div>
                 
                 <div class="section-content">
-                    <div class="controls">
-                        <button class="play-btn">Play</button>
-                        <button class="reset-btn">Reset</button>
+                    <!-- Section Page Navigation -->
+                    <div class="section-page-nav">
+                        <button class="section-nav-btn nav-prev" disabled>◀</button>
+                        <span class="section-page-indicator">Main</span>
+                        <button class="section-nav-btn nav-next">▶</button>
                     </div>
                     
-                    <div class="info-display">
-                        <div class="value-box vx">X: <span class="valX">--</span></div>
-                        <div class="value-box vy">Y: <span class="valY">--</span></div>
-                        <div class="value-box vz">Z: <span class="valZ">--</span></div>
-                        <div class="value-box vt">T: <span class="valTime">--</span></div>
-                    </div>
-                    
-                    <div class="canvas-container"></div>
-                    
-                    <div class="legend">
-                        <span><span class="legend-color" style="background:#ff6464;"></span>X</span>
-                        <span><span class="legend-color" style="background:#64c8c8;"></span>Y</span>
-                        <span><span class="legend-color" style="background:#ffe664;"></span>Z</span>
-                    </div>
-                    
-                    <div class="data-input">
-                        <h4>Paste Serial Data</h4>
-                        <textarea class="serial-data" placeholder="15:56:37.663 -> X: 215.3125	Y: 6.8750	Z: -5.0625"></textarea>
-                        <div class="input-buttons">
-                            <button class="parse-btn">Load Data</button>
-                            <button class="clear-btn">Clear</button>
+                    <!-- Page 0: Main View -->
+                    <div class="section-page main-view active">
+                        <div class="controls">
+                            <button class="play-btn">Play</button>
+                            <button class="reset-btn">Reset</button>
                         </div>
-                        <div class="parse-status"></div>
+                        
+                        <div class="info-display">
+                            <div class="value-box vx">X: <span class="valX">--</span></div>
+                            <div class="value-box vy">Y: <span class="valY">--</span></div>
+                            <div class="value-box vz">Z: <span class="valZ">--</span></div>
+                            <div class="value-box vt">T: <span class="valTime">--</span></div>
+                        </div>
+                        
+                        <div class="canvas-container"></div>
+                        
+                        <div class="legend">
+                            <span><span class="legend-color" style="background:#ff6464;"></span>X</span>
+                            <span><span class="legend-color" style="background:#64c8c8;"></span>Y</span>
+                            <span><span class="legend-color" style="background:#ffe664;"></span>Z</span>
+                        </div>
+                        
+                        <div class="data-input">
+                            <h4>Paste Serial Data</h4>
+                            <textarea class="serial-data" placeholder="15:56:37.663 -> X: 215.3125	Y: 6.8750	Z: -5.0625"></textarea>
+                            <div class="input-buttons">
+                                <button class="parse-btn">Load Data</button>
+                                <button class="clear-btn">Clear</button>
+                            </div>
+                            <div class="parse-status"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Page 1: Heatmap View -->
+                    <div class="section-page heatmap-view">
+                        <div class="heatmap-grid">
+                            <div class="heatmap-panel" data-axis="x">
+                                <h4>X Axis</h4>
+                                <div class="heatmap-canvas"></div>
+                                <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                            </div>
+                            <div class="heatmap-panel" data-axis="y">
+                                <h4>Y Axis</h4>
+                                <div class="heatmap-canvas"></div>
+                                <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                            </div>
+                            <div class="heatmap-panel" data-axis="z">
+                                <h4>Z Axis</h4>
+                                <div class="heatmap-canvas"></div>
+                                <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                            </div>
+                            <div class="heatmap-panel" data-axis="xyz">
+                                <h4>XYZ Magnitude</h4>
+                                <div class="heatmap-canvas"></div>
+                                <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                            </div>
+                        </div>
+                        <div class="heatmap-tooltip"></div>
                     </div>
                 </div>
             </section>

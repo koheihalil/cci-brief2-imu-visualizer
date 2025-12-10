@@ -232,3 +232,112 @@ body {
 .add-section-btn:hover {
     border-color: #fff;
 }
+
+/* Section Page Navigation */
+.section-page-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 8px;
+    margin-bottom: 10px;
+    background: #111;
+    border: 1px solid #444;
+}
+
+.section-nav-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: monospace;
+    background: #000;
+    color: #fff;
+    border: 1px solid #666;
+    cursor: pointer;
+}
+
+.section-nav-btn:hover:not(:disabled) {
+    border-color: #fff;
+    background: #222;
+}
+
+.section-nav-btn:disabled {
+    color: #444;
+    border-color: #333;
+    cursor: not-allowed;
+}
+
+.section-page-indicator {
+    font-size: 11px;
+    color: #888;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Section Pages */
+.section-page {
+    display: none;
+}
+
+.section-page.active {
+    display: block;
+}
+
+/* Heatmap View (inside section) */
+.heatmap-view .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.heatmap-view .heatmap-panel {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    padding: 8px;
+}
+
+.heatmap-view .heatmap-panel h4 {
+    color: #888;
+    font-size: 11px;
+    font-weight: normal;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.heatmap-view .heatmap-panel[data-axis="x"] h4 { color: #ff6464; }
+.heatmap-view .heatmap-panel[data-axis="y"] h4 { color: #64c8c8; }
+.heatmap-view .heatmap-panel[data-axis="z"] h4 { color: #ffe664; }
+.heatmap-view .heatmap-panel[data-axis="xyz"] h4 { color: #c8a0ff; }
+
+.heatmap-view .heatmap-canvas {
+    display: flex;
+    justify-content: center;
+    min-height: 120px;
+}
+
+.heatmap-view .heatmap-legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 5px;
+    font-size: 9px;
+    color: #666;
+}
+
+.heatmap-view .hm-gradient {
+    width: 80px;
+    height: 10px;
+    background: linear-gradient(to right, #1e3a8a, #3b82f6, #fff, #ef4444, #7f1d1d);
+    border: 1px solid #444;
+}
+
+.heatmap-view .heatmap-tooltip {
+    text-align: center;
+    margin-top: 8px;
+    padding: 5px;
+    font-size: 10px;
+    color: #888;
+    background: #111;
+    border: 1px solid #333;
+    min-height: 16px;
+}

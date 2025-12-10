@@ -64,7 +64,9 @@ function createSectionInstance(element, id) {
         isPlaying: false,
         currentBrightness: 0,
         targetBrightness: 0,
-        brightnessHistory: []
+        brightnessHistory: [],
+        currentPage: 0, // 0: main, 1: heatmap
+        heatmapInstances: {}
     };
     
     sections.push(section);
@@ -306,6 +308,21 @@ function drawBrightnessGraph(p, section) {
 function bindSectionEvents(section) {
     let el = section.element;
     
+    // Page navigation
+    el.querySelector('.nav-prev').addEventListener('click', () => {
+        if (section.currentPage > 0) {
+            section.currentPage--;
+            updateSectionPage(section);
+        }
+    });
+    
+    el.querySelector('.nav-next').addEventListener('click', () => {
+        if (section.currentPage < 1) {
+            section.currentPage++;
+            updateSectionPage(section);
+        }
+    });
+    
     el.querySelector('.play-btn').addEventListener('click', () => {
         section.isPlaying = !section.isPlaying;
         el.querySelector('.play-btn').textContent = section.isPlaying ? 'Pause' : 'Play';
@@ -423,30 +440,67 @@ function addNewSection() {
                 </div>
             </div>
             <div class="section-content">
-                <div class="controls">
-                    <button class="play-btn">Play</button>
-                    <button class="reset-btn">Reset</button>
+                <!-- Section Page Navigation -->
+                <div class="section-page-nav">
+                    <button class="section-nav-btn nav-prev" disabled>◀</button>
+                    <span class="section-page-indicator">Main</span>
+                    <button class="section-nav-btn nav-next">▶</button>
                 </div>
-                <div class="info-display">
-                    <div class="value-box vx">X: <span class="valX">--</span></div>
-                    <div class="value-box vy">Y: <span class="valY">--</span></div>
-                    <div class="value-box vz">Z: <span class="valZ">--</span></div>
-                    <div class="value-box vt">T: <span class="valTime">--</span></div>
-                </div>
-                <div class="canvas-container"></div>
-                <div class="legend">
-                    <span><span class="legend-color" style="background:#ff6464;"></span>X</span>
-                    <span><span class="legend-color" style="background:#64c8c8;"></span>Y</span>
-                    <span><span class="legend-color" style="background:#ffe664;"></span>Z</span>
-                </div>
-                <div class="data-input">
-                    <h4>Paste Serial Data</h4>
-                    <textarea class="serial-data" placeholder="15:56:37.663 -> X: 215.3125Y: 6.8750Z: -5.0625"></textarea>
-                    <div class="input-buttons">
-                        <button class="parse-btn">Load Data</button>
-                        <button class="clear-btn">Clear</button>
+                
+                <!-- Page 0: Main View -->
+                <div class="section-page main-view active">
+                    <div class="controls">
+                        <button class="play-btn">Play</button>
+                        <button class="reset-btn">Reset</button>
                     </div>
-                    <div class="parse-status"></div>
+                    <div class="info-display">
+                        <div class="value-box vx">X: <span class="valX">--</span></div>
+                        <div class="value-box vy">Y: <span class="valY">--</span></div>
+                        <div class="value-box vz">Z: <span class="valZ">--</span></div>
+                        <div class="value-box vt">T: <span class="valTime">--</span></div>
+                    </div>
+                    <div class="canvas-container"></div>
+                    <div class="legend">
+                        <span><span class="legend-color" style="background:#ff6464;"></span>X</span>
+                        <span><span class="legend-color" style="background:#64c8c8;"></span>Y</span>
+                        <span><span class="legend-color" style="background:#ffe664;"></span>Z</span>
+                    </div>
+                    <div class="data-input">
+                        <h4>Paste Serial Data</h4>
+                        <textarea class="serial-data" placeholder="15:56:37.663 -> X: 215.3125Y: 6.8750Z: -5.0625"></textarea>
+                        <div class="input-buttons">
+                            <button class="parse-btn">Load Data</button>
+                            <button class="clear-btn">Clear</button>
+                        </div>
+                        <div class="parse-status"></div>
+                    </div>
+                </div>
+                
+                <!-- Page 1: Heatmap View -->
+                <div class="section-page heatmap-view">
+                    <div class="heatmap-grid">
+                        <div class="heatmap-panel" data-axis="x">
+                            <h4>X Axis</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                        <div class="heatmap-panel" data-axis="y">
+                            <h4>Y Axis</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                        <div class="heatmap-panel" data-axis="z">
+                            <h4>Z Axis</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                        <div class="heatmap-panel" data-axis="xyz">
+                            <h4>XYZ Magnitude</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                    </div>
+                    <div class="heatmap-tooltip"></div>
                 </div>
             </div>
         </section>
@@ -457,4 +511,167 @@ function addNewSection() {
     let newEl = grid.querySelector(`[data-section-id="${sectionCounter}"]`);
     createSectionInstance(newEl, sectionCounter);
     sectionCounter++;
+}
+
+// Section Page Navigation
+function updateSectionPage(section) {
+    let el = section.element;
+    let mainView = el.querySelector('.main-view');
+    let heatmapView = el.querySelector('.heatmap-view');
+    let navPrev = el.querySelector('.nav-prev');
+    let navNext = el.querySelector('.nav-next');
+    let indicator = el.querySelector('.section-page-indicator');
+    
+    if (section.currentPage === 0) {
+        mainView.classList.add('active');
+        heatmapView.classList.remove('active');
+        navPrev.disabled = true;
+        navNext.disabled = false;
+        indicator.textContent = 'Main';
+    } else {
+        mainView.classList.remove('active');
+        heatmapView.classList.add('active');
+        navPrev.disabled = false;
+        navNext.disabled = true;
+        indicator.textContent = 'Heatmap';
+        
+        // Initialize heatmaps for this section
+        initSectionHeatmaps(section);
+    }
+}
+
+// Heatmap Functions for Section
+function initSectionHeatmaps(section) {
+    let el = section.element;
+    let data = section.data;
+    
+    // Clear existing heatmap instances
+    Object.values(section.heatmapInstances).forEach(instance => {
+        if (instance && instance.remove) instance.remove();
+    });
+    section.heatmapInstances = {};
+    
+    // Create heatmaps for X, Y, Z, and XYZ
+    ['x', 'y', 'z', 'xyz'].forEach(axis => {
+        let panel = el.querySelector(`.heatmap-panel[data-axis="${axis}"]`);
+        let container = panel.querySelector('.heatmap-canvas');
+        container.innerHTML = '';
+        
+        let tooltipEl = el.querySelector('.heatmap-tooltip');
+        let p5Instance = new p5(sketch => heatmapSketch(sketch, data, axis, tooltipEl), container);
+        section.heatmapInstances[axis] = p5Instance;
+        
+        // Update legend
+        let values;
+        if (axis === 'xyz') {
+            values = data.map(d => Math.sqrt(d.x * d.x + d.y * d.y + d.z * d.z));
+        } else {
+            values = data.map(d => d[axis]);
+        }
+        let minVal = Math.min(...values).toFixed(1);
+        let maxVal = Math.max(...values).toFixed(1);
+        panel.querySelector('.hm-min').textContent = minVal;
+        panel.querySelector('.hm-max').textContent = maxVal;
+    });
+}
+
+function heatmapSketch(p, data, axis, tooltipEl) {
+    let cellSize = 12;
+    let cols = Math.ceil(Math.sqrt(data.length * 1.5));
+    let rows = Math.ceil(data.length / cols);
+    let offsetX = 20;
+    let offsetY = 15;
+    let canvasWidth = cols * cellSize + offsetX + 10;
+    let canvasHeight = rows * cellSize + offsetY + 10;
+    
+    // Calculate min/max for this axis
+    let values = [];
+    if (axis === 'xyz') {
+        values = data.map(d => Math.sqrt(d.x * d.x + d.y * d.y + d.z * d.z));
+    } else {
+        values = data.map(d => d[axis]);
+    }
+    let minVal = Math.min(...values);
+    let maxVal = Math.max(...values);
+    
+    p.setup = function() {
+        p.createCanvas(canvasWidth, canvasHeight);
+        p.noLoop();
+    };
+    
+    p.draw = function() {
+        p.background(0);
+        
+        // Draw heatmap cells
+        for (let i = 0; i < data.length; i++) {
+            let col = i % cols;
+            let row = Math.floor(i / cols);
+            let x = offsetX + col * cellSize;
+            let y = offsetY + row * cellSize;
+            
+            let value;
+            if (axis === 'xyz') {
+                value = Math.sqrt(data[i].x * data[i].x + data[i].y * data[i].y + data[i].z * data[i].z);
+            } else {
+                value = data[i][axis];
+            }
+            
+            let color = valueToColor(p, value, minVal, maxVal);
+            
+            p.fill(color);
+            p.stroke(20);
+            p.strokeWeight(1);
+            p.rect(x, y, cellSize - 1, cellSize - 1);
+        }
+        
+        // Row labels
+        p.fill(80);
+        p.textSize(7);
+        p.textAlign(p.RIGHT);
+        for (let row = 0; row < rows; row += 2) {
+            let frameStart = row * cols;
+            if (frameStart < data.length) {
+                p.text(frameStart, offsetX - 2, offsetY + row * cellSize + cellSize - 2);
+            }
+        }
+    };
+    
+    p.mouseMoved = function() {
+        let col = Math.floor((p.mouseX - offsetX) / cellSize);
+        let row = Math.floor((p.mouseY - offsetY) / cellSize);
+        let index = row * cols + col;
+        
+        if (index >= 0 && index < data.length && col >= 0 && col < cols && row >= 0 && row < rows) {
+            let d = data[index];
+            let value;
+            if (axis === 'xyz') {
+                value = Math.sqrt(d.x * d.x + d.y * d.y + d.z * d.z).toFixed(2);
+            } else {
+                value = d[axis].toFixed(2);
+            }
+            tooltipEl.textContent = `Frame ${index} | ${d.timestamp} | ${axis.toUpperCase()}: ${value}`;
+        }
+    };
+}
+
+function valueToColor(p, value, minVal, maxVal) {
+    let range = maxVal - minVal;
+    if (range === 0) range = 1;
+    let normalized = (value - minVal) / range;
+    
+    let r, g, b;
+    
+    if (normalized < 0.5) {
+        let t = normalized * 2;
+        r = p.lerp(30, 255, t);
+        g = p.lerp(58, 255, t);
+        b = p.lerp(138, 255, t);
+    } else {
+        let t = (normalized - 0.5) * 2;
+        r = p.lerp(255, 127, t);
+        g = p.lerp(255, 29, t);
+        b = p.lerp(255, 29, t);
+    }
+    
+    return p.color(r, g, b);
 }
