@@ -2,45 +2,74 @@
 let sections = [];
 let sectionCounter = 0;
 
-const colors = {
+// Right hand colors
+const colorsRight = {
     x: [255, 100, 100],
     y: [100, 200, 200],
     z: [255, 230, 100]
 };
 
+// Left hand colors
+const colorsLeft = {
+    x: [255, 100, 200],
+    y: [100, 255, 200],
+    z: [200, 160, 255]
+};
+
+// Data format: timestamp, orientX, orientY, orientZ, accelX, accelY, accelZ, speed, sys, gyro, accel, mag
 const defaultData = [
-    {"timestamp": "15:56:37.663", "x": 215.3125, "y": 6.8750, "z": -5.0625},
-    {"timestamp": "15:56:37.795", "x": 215.3125, "y": 6.5625, "z": -0.6875},
-    {"timestamp": "15:56:37.926", "x": 216.7500, "y": 6.2500, "z": 4.0000},
-    {"timestamp": "15:56:38.059", "x": 215.8750, "y": 7.0000, "z": 3.6875},
-    {"timestamp": "15:56:38.190", "x": 214.8125, "y": 2.3125, "z": 8.6250},
-    {"timestamp": "15:56:38.321", "x": 219.5000, "y": 1.5625, "z": 5.7500},
-    {"timestamp": "15:56:38.451", "x": 208.5000, "y": 5.8125, "z": 0.6250},
-    {"timestamp": "15:56:38.583", "x": 213.0000, "y": 3.1250, "z": 5.0000},
-    {"timestamp": "15:56:38.715", "x": 215.6250, "y": 6.4375, "z": 11.1250},
-    {"timestamp": "15:56:38.848", "x": 219.3750, "y": 9.6250, "z": 1.7500},
-    {"timestamp": "15:56:38.979", "x": 220.8750, "y": 7.5625, "z": 2.7500},
-    {"timestamp": "15:56:39.109", "x": 231.6875, "y": 5.2500, "z": -2.0625},
-    {"timestamp": "15:56:39.242", "x": 238.1250, "y": 6.6250, "z": 3.3125},
-    {"timestamp": "15:56:39.373", "x": 240.5000, "y": 10.3125, "z": 8.3125},
-    {"timestamp": "15:56:39.505", "x": 242.5625, "y": 20.0000, "z": 6.5625},
-    {"timestamp": "15:56:39.636", "x": 242.7500, "y": 39.2500, "z": 13.1875},
-    {"timestamp": "15:56:39.801", "x": 251.8750, "y": 76.9375, "z": 80.5000},
-    {"timestamp": "15:56:39.932", "x": 236.9375, "y": 47.6250, "z": 22.8750},
-    {"timestamp": "15:56:40.064", "x": 232.0000, "y": 3.7500, "z": -4.6875},
-    {"timestamp": "15:56:40.195", "x": 219.6250, "y": 3.3750, "z": -1.1875},
-    {"timestamp": "15:56:40.325", "x": 208.1875, "y": 6.2500, "z": -0.8125},
-    {"timestamp": "15:56:40.457", "x": 208.5000, "y": 3.4375, "z": 2.2500},
-    {"timestamp": "15:56:40.588", "x": 204.8125, "y": 2.7500, "z": 13.2500},
-    {"timestamp": "15:56:40.720", "x": 205.3750, "y": 0.6250, "z": 8.2500},
-    {"timestamp": "15:56:40.851", "x": 203.9375, "y": -13.7500, "z": 21.3750},
-    {"timestamp": "15:56:40.982", "x": 208.0000, "y": -8.3125, "z": 7.5000}
+    {"timestamp": "00:00:02.349", "orientX": 356.81, "orientY": 26.94, "orientZ": -77.00, "accelX": 1.02, "accelY": -0.93, "accelZ": 0.61, "speed": 0.24, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:02.460", "orientX": 356.06, "orientY": 26.56, "orientZ": -79.94, "accelX": -0.57, "accelY": -1.26, "accelZ": 0.64, "speed": 0.35, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:02.571", "orientX": 354.94, "orientY": 26.31, "orientZ": -85.00, "accelX": -0.47, "accelY": -0.92, "accelZ": 0.41, "speed": 0.45, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:02.681", "orientX": 354.44, "orientY": 26.06, "orientZ": -85.69, "accelX": -0.17, "accelY": -1.03, "accelZ": 0.65, "speed": 0.59, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:02.791", "orientX": 354.00, "orientY": 25.81, "orientZ": -87.37, "accelX": -0.09, "accelY": 0.67, "accelZ": 0.48, "speed": 0.56, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:02.903", "orientX": 353.69, "orientY": 25.19, "orientZ": -89.25, "accelX": 0.27, "accelY": -0.21, "accelZ": 0.51, "speed": 0.62, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.013", "orientX": 352.31, "orientY": 24.56, "orientZ": -90.44, "accelX": 0.91, "accelY": -1.54, "accelZ": 0.74, "speed": 0.81, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.124", "orientX": 350.75, "orientY": 24.25, "orientZ": -91.56, "accelX": -0.51, "accelY": -0.05, "accelZ": 0.60, "speed": 0.85, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.234", "orientX": 350.37, "orientY": 24.12, "orientZ": -92.31, "accelX": 0.24, "accelY": -0.54, "accelZ": 0.51, "speed": 0.93, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.344", "orientX": 349.69, "orientY": 24.00, "orientZ": -93.81, "accelX": 1.38, "accelY": -0.66, "accelZ": 0.52, "speed": 1.05, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.456", "orientX": 349.06, "orientY": 23.44, "orientZ": -93.87, "accelX": 0.36, "accelY": -0.45, "accelZ": 0.59, "speed": 1.14, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.567", "orientX": 348.06, "orientY": 22.81, "orientZ": -93.75, "accelX": -0.18, "accelY": 0.19, "accelZ": 0.47, "speed": 1.16, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.678", "orientX": 347.81, "orientY": 22.69, "orientZ": -91.19, "accelX": 0.33, "accelY": 1.52, "accelZ": 0.12, "speed": 1.07, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.788", "orientX": 348.37, "orientY": 22.87, "orientZ": -86.87, "accelX": -0.18, "accelY": 0.03, "accelZ": 0.28, "speed": 1.09, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:03.899", "orientX": 348.75, "orientY": 24.00, "orientZ": -82.50, "accelX": 0.39, "accelY": -1.24, "accelZ": 0.46, "speed": 1.22, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.009", "orientX": 349.62, "orientY": 24.44, "orientZ": -79.87, "accelX": -0.33, "accelY": -1.06, "accelZ": 0.65, "speed": 1.33, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.120", "orientX": 349.06, "orientY": 26.44, "orientZ": -77.56, "accelX": 0.48, "accelY": -1.03, "accelZ": 0.60, "speed": 1.47, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.231", "orientX": 348.31, "orientY": 26.87, "orientZ": -77.94, "accelX": 0.00, "accelY": 0.19, "accelZ": 0.32, "speed": 1.48, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.341", "orientX": 348.19, "orientY": 27.37, "orientZ": -78.37, "accelX": -0.19, "accelY": -0.32, "accelZ": 0.46, "speed": 1.54, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.451", "orientX": 347.87, "orientY": 28.00, "orientZ": -78.50, "accelX": 0.32, "accelY": -0.96, "accelZ": 0.50, "speed": 1.65, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.563", "orientX": 347.75, "orientY": 28.25, "orientZ": -78.00, "accelX": 0.36, "accelY": -0.28, "accelZ": 0.42, "speed": 1.72, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.674", "orientX": 347.44, "orientY": 28.44, "orientZ": -77.87, "accelX": -0.50, "accelY": -0.63, "accelZ": 0.57, "speed": 1.80, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.785", "orientX": 347.12, "orientY": 28.94, "orientZ": -78.06, "accelX": 0.00, "accelY": -0.69, "accelZ": 0.49, "speed": 1.89, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:04.895", "orientX": 347.00, "orientY": 29.00, "orientZ": -78.37, "accelX": 0.20, "accelY": -0.90, "accelZ": 0.78, "speed": 2.02, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:05.006", "orientX": 346.87, "orientY": 29.06, "orientZ": -78.56, "accelX": -0.33, "accelY": -0.46, "accelZ": 0.43, "speed": 2.08, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0},
+    {"timestamp": "00:00:05.117", "orientX": 346.69, "orientY": 29.06, "orientZ": -79.19, "accelX": -0.05, "accelY": -0.44, "accelZ": 0.42, "speed": 2.15, "calSys": 0, "calGyro": 0, "calAccel": 0, "calMag": 0}
 ];
+
+// For backward compatibility, map orientation to x, y, z
+function getDisplayData(d) {
+    return {
+        x: d.orientX,
+        y: d.orientY,
+        z: d.orientZ
+    };
+}
 
 function setup() {
     noCanvas();
     initExistingSections();
     setupAddButton();
+}
+
+// Convert timestamp string (00:00:00.000) to milliseconds
+function timestampToMs(timestamp) {
+    let parts = timestamp.split(':');
+    let hours = parseInt(parts[0]);
+    let minutes = parseInt(parts[1]);
+    let secParts = parts[2].split('.');
+    let seconds = parseInt(secParts[0]);
+    let ms = parseInt(secParts[1]);
+    return (hours * 3600 + minutes * 60 + seconds) * 1000 + ms;
 }
 
 function initExistingSections() {
@@ -59,14 +88,20 @@ function createSectionInstance(element, id) {
         id: id,
         element: element,
         p5: p5Instance,
-        data: JSON.parse(JSON.stringify(defaultData)),
+        dataRight: JSON.parse(JSON.stringify(defaultData)),
+        dataLeft: [],
         currentIndex: 0,
         isPlaying: false,
-        currentBrightness: 0,
-        targetBrightness: 0,
-        brightnessHistory: [],
+        currentBrightnessRight: 0,
+        targetBrightnessRight: 0,
+        currentBrightnessLeft: 0,
+        targetBrightnessLeft: 0,
+        brightnessHistoryRight: [],
+        brightnessHistoryLeft: [],
         currentPage: 0, // 0: main, 1: heatmap
-        heatmapInstances: {}
+        heatmapInstances: {},
+        playStartTime: 0,
+        dataStartTime: 0
     };
     
     sections.push(section);
@@ -76,37 +111,68 @@ function createSectionInstance(element, id) {
 
 function sectionSketch(p, sectionId) {
     p.setup = function() {
-        p.createCanvas(520, 320, p.WEBGL);
+        p.createCanvas(680, 380, p.WEBGL);
     };
     
     p.draw = function() {
         let section = sections.find(s => s.id === sectionId);
-        if (!section || section.data.length === 0) return;
+        if (!section || section.dataRight.length === 0) return;
         
-        // Smooth fade brightness (slower lerp = smoother)
-        section.currentBrightness = p.lerp(section.currentBrightness, section.targetBrightness, 0.06);
-        section.targetBrightness *= 0.85;
+        // Smooth fade brightness for both hands
+        section.currentBrightnessRight = p.lerp(section.currentBrightnessRight, section.targetBrightnessRight, 0.08);
+        section.targetBrightnessRight *= 0.85;
+        section.currentBrightnessLeft = p.lerp(section.currentBrightnessLeft, section.targetBrightnessLeft, 0.08);
+        section.targetBrightnessLeft *= 0.85;
         
-        // Record brightness history (every 3 frames for slower progress)
-        if (p.frameCount % 3 === 0) {
-            section.brightnessHistory.push(section.currentBrightness);
-            if (section.brightnessHistory.length > 400) {
-                section.brightnessHistory.shift();
+        // Record brightness history (every 2 frames)
+        if (p.frameCount % 2 === 0) {
+            section.brightnessHistoryRight.push(section.currentBrightnessRight);
+            section.brightnessHistoryLeft.push(section.currentBrightnessLeft);
+            if (section.brightnessHistoryRight.length > 400) {
+                section.brightnessHistoryRight.shift();
+                section.brightnessHistoryLeft.shift();
             }
         }
         
-        // Update section element background color
-        let brightness = Math.floor(section.currentBrightness * 0.6);
+        // Update section element background color (average of both)
+        let brightness = Math.floor((section.currentBrightnessRight + section.currentBrightnessLeft) * 0.3);
         section.element.style.backgroundColor = `rgb(${brightness}, ${brightness}, ${brightness})`;
         
         // Canvas background
         p.background(0);
         
-        if (section.isPlaying && p.frameCount % 5 === 0) {
-            let prevIndex = section.currentIndex;
-            section.currentIndex = (section.currentIndex + 1) % section.data.length;
-            updateMovementBrightness(section, prevIndex);
-            updateSectionDisplay(section);
+        // Timestamp-based playback
+        if (section.isPlaying) {
+            let currentTime = Date.now();
+            let elapsedTime = currentTime - section.playStartTime;
+            let dataStartMs = timestampToMs(section.dataRight[0].timestamp);
+            let targetTimeMs = dataStartMs + elapsedTime;
+            
+            // Find the frame that matches current playback time
+            let newIndex = section.currentIndex;
+            let maxLen = Math.max(section.dataRight.length, section.dataLeft.length);
+            for (let i = section.currentIndex; i < maxLen; i++) {
+                let frameTimeMs = timestampToMs(section.dataRight[Math.min(i, section.dataRight.length - 1)].timestamp);
+                if (frameTimeMs <= targetTimeMs) {
+                    newIndex = i;
+                } else {
+                    break;
+                }
+            }
+            
+            // Update if frame changed
+            if (newIndex !== section.currentIndex) {
+                let prevIndex = section.currentIndex;
+                section.currentIndex = newIndex;
+                updateMovementBrightness(section, prevIndex);
+                updateSectionDisplay(section);
+            }
+            
+            // Loop back to start when finished
+            if (section.currentIndex >= maxLen - 1) {
+                section.currentIndex = 0;
+                section.playStartTime = Date.now();
+            }
         }
         
         p.push();
@@ -114,9 +180,16 @@ function sectionSketch(p, sectionId) {
         drawGraph(p, section);
         p.pop();
         
+        // Right hand 3D
         p.push();
-        p.translate(140, 0, 0);
-        draw3D(p, section);
+        p.translate(60, -50, 0);
+        draw3D(p, section, 'right');
+        p.pop();
+        
+        // Left hand 3D
+        p.push();
+        p.translate(220, -50, 0);
+        draw3D(p, section, 'left');
         p.pop();
         
         p.push();
@@ -127,25 +200,41 @@ function sectionSketch(p, sectionId) {
 }
 
 function updateMovementBrightness(section, prevIndex) {
-    let prev = section.data[prevIndex];
-    let curr = section.data[section.currentIndex];
+    // Right hand
+    let prevR = section.dataRight[Math.min(prevIndex, section.dataRight.length - 1)];
+    let currR = section.dataRight[Math.min(section.currentIndex, section.dataRight.length - 1)];
     
-    let dx = Math.abs(curr.x - prev.x);
-    let dy = Math.abs(curr.y - prev.y);
-    let dz = Math.abs(curr.z - prev.z);
-    let totalChange = dx + dy + dz;
+    let dxR = Math.abs(currR.orientX - prevR.orientX);
+    let dyR = Math.abs(currR.orientY - prevR.orientY);
+    let dzR = Math.abs(currR.orientZ - prevR.orientZ);
+    let totalChangeR = dxR + dyR + dzR;
+    
+    // Left hand
+    let totalChangeL = 0;
+    if (section.dataLeft.length > 0) {
+        let prevL = section.dataLeft[Math.min(prevIndex, section.dataLeft.length - 1)];
+        let currL = section.dataLeft[Math.min(section.currentIndex, section.dataLeft.length - 1)];
+        
+        let dxL = Math.abs(currL.orientX - prevL.orientX);
+        let dyL = Math.abs(currL.orientY - prevL.orientY);
+        let dzL = Math.abs(currL.orientZ - prevL.orientZ);
+        totalChangeL = dxL + dyL + dzL;
+    }
     
     // Ignore small changes (noise/tremor threshold)
-    let threshold = 30;
-    if (totalChange > threshold) {
-        section.targetBrightness = Math.min(255, section.targetBrightness + (totalChange - threshold) * 5);
+    let threshold = 5;
+    if (totalChangeR > threshold) {
+        section.targetBrightnessRight = Math.min(255, section.targetBrightnessRight + (totalChangeR - threshold) * 15);
+    }
+    if (totalChangeL > threshold) {
+        section.targetBrightnessLeft = Math.min(255, section.targetBrightnessLeft + (totalChangeL - threshold) * 15);
     }
 }
 
 function drawGraph(p, section) {
     let gx = 15;
     let gy = 15;
-    let gw = 250;
+    let gw = 350;
     let gh = 170;
     
     p.fill(40);
@@ -159,108 +248,165 @@ function drawGraph(p, section) {
         p.line(gx, y, gx + gw, y);
     }
     
-    let spacing = gw / (section.data.length - 1);
+    // Right hand lines (solid)
+    let spacingR = gw / (section.dataRight.length - 1);
     
-    p.stroke(colors.x[0], colors.x[1], colors.x[2]);
+    p.stroke(colorsRight.x[0], colorsRight.x[1], colorsRight.x[2]);
     p.strokeWeight(1.5);
     p.noFill();
     p.beginShape();
-    for (let i = 0; i < section.data.length; i++) {
-        p.vertex(gx + i * spacing, gy + p.map(section.data[i].x, 360, 0, 0, gh));
+    for (let i = 0; i < section.dataRight.length; i++) {
+        p.vertex(gx + i * spacingR, gy + p.map(section.dataRight[i].orientX, 360, 0, 0, gh));
     }
     p.endShape();
     
-    p.stroke(colors.y[0], colors.y[1], colors.y[2]);
+    p.stroke(colorsRight.y[0], colorsRight.y[1], colorsRight.y[2]);
     p.beginShape();
-    for (let i = 0; i < section.data.length; i++) {
-        p.vertex(gx + i * spacing, gy + p.map(section.data[i].y, 90, -90, 0, gh));
+    for (let i = 0; i < section.dataRight.length; i++) {
+        p.vertex(gx + i * spacingR, gy + p.map(section.dataRight[i].orientY, 90, -90, 0, gh));
     }
     p.endShape();
     
-    p.stroke(colors.z[0], colors.z[1], colors.z[2]);
+    p.stroke(colorsRight.z[0], colorsRight.z[1], colorsRight.z[2]);
     p.beginShape();
-    for (let i = 0; i < section.data.length; i++) {
-        p.vertex(gx + i * spacing, gy + p.map(section.data[i].z, 90, -90, 0, gh));
+    for (let i = 0; i < section.dataRight.length; i++) {
+        p.vertex(gx + i * spacingR, gy + p.map(section.dataRight[i].orientZ, 90, -90, 0, gh));
     }
     p.endShape();
     
-    let mx = gx + section.currentIndex * spacing;
+    // Left hand lines (dashed style - lighter stroke)
+    if (section.dataLeft.length > 0) {
+        let spacingL = gw / (section.dataLeft.length - 1);
+        
+        p.stroke(colorsLeft.x[0], colorsLeft.x[1], colorsLeft.x[2]);
+        p.strokeWeight(1);
+        p.beginShape();
+        for (let i = 0; i < section.dataLeft.length; i++) {
+            p.vertex(gx + i * spacingL, gy + p.map(section.dataLeft[i].orientX, 360, 0, 0, gh));
+        }
+        p.endShape();
+        
+        p.stroke(colorsLeft.y[0], colorsLeft.y[1], colorsLeft.y[2]);
+        p.beginShape();
+        for (let i = 0; i < section.dataLeft.length; i++) {
+            p.vertex(gx + i * spacingL, gy + p.map(section.dataLeft[i].orientY, 90, -90, 0, gh));
+        }
+        p.endShape();
+        
+        p.stroke(colorsLeft.z[0], colorsLeft.z[1], colorsLeft.z[2]);
+        p.beginShape();
+        for (let i = 0; i < section.dataLeft.length; i++) {
+            p.vertex(gx + i * spacingL, gy + p.map(section.dataLeft[i].orientZ, 90, -90, 0, gh));
+        }
+        p.endShape();
+    }
+    
+    // Current position marker
+    let mx = gx + section.currentIndex * spacingR;
     p.stroke(255);
     p.strokeWeight(1);
     p.line(mx, gy, mx, gy + gh);
     
-    let d = section.data[section.currentIndex];
+    // Right hand dots
+    let dR = section.dataRight[Math.min(section.currentIndex, section.dataRight.length - 1)];
     p.noStroke();
-    p.fill(colors.x[0], colors.x[1], colors.x[2]);
-    p.ellipse(mx, gy + p.map(d.x, 360, 0, 0, gh), 6, 6);
-    p.fill(colors.y[0], colors.y[1], colors.y[2]);
-    p.ellipse(mx, gy + p.map(d.y, 90, -90, 0, gh), 6, 6);
-    p.fill(colors.z[0], colors.z[1], colors.z[2]);
-    p.ellipse(mx, gy + p.map(d.z, 90, -90, 0, gh), 6, 6);
+    p.fill(colorsRight.x[0], colorsRight.x[1], colorsRight.x[2]);
+    p.ellipse(mx, gy + p.map(dR.orientX, 360, 0, 0, gh), 6, 6);
+    p.fill(colorsRight.y[0], colorsRight.y[1], colorsRight.y[2]);
+    p.ellipse(mx, gy + p.map(dR.orientY, 90, -90, 0, gh), 6, 6);
+    p.fill(colorsRight.z[0], colorsRight.z[1], colorsRight.z[2]);
+    p.ellipse(mx, gy + p.map(dR.orientZ, 90, -90, 0, gh), 6, 6);
+    
+    // Left hand dots (smaller)
+    if (section.dataLeft.length > 0) {
+        let dL = section.dataLeft[Math.min(section.currentIndex, section.dataLeft.length - 1)];
+        p.fill(colorsLeft.x[0], colorsLeft.x[1], colorsLeft.x[2]);
+        p.ellipse(mx, gy + p.map(dL.orientX, 360, 0, 0, gh), 4, 4);
+        p.fill(colorsLeft.y[0], colorsLeft.y[1], colorsLeft.y[2]);
+        p.ellipse(mx, gy + p.map(dL.orientY, 90, -90, 0, gh), 4, 4);
+        p.fill(colorsLeft.z[0], colorsLeft.z[1], colorsLeft.z[2]);
+        p.ellipse(mx, gy + p.map(dL.orientZ, 90, -90, 0, gh), 4, 4);
+    }
 }
 
-function draw3D(p, section) {
-    let d = section.data[section.currentIndex];
-    let heading = p.radians(d.x);
-    let roll = p.radians(d.y);
-    let pitch = p.radians(d.z);
+function draw3D(p, section, hand) {
+    let data = hand === 'right' ? section.dataRight : section.dataLeft;
+    if (data.length === 0) return;
+    
+    let d = data[Math.min(section.currentIndex, data.length - 1)];
+    let heading = p.radians(d.orientX);
+    let roll = p.radians(d.orientY);
+    let pitch = p.radians(d.orientZ);
+    
+    let boxColor = hand === 'right' ? [70, 120, 170] : [170, 100, 70];
+    let strokeColor = hand === 'right' ? [100, 150, 200] : [200, 130, 100];
     
     p.ambientLight(100);
     p.directionalLight(255, 255, 255, 0.5, 0.5, -1);
     
     p.push();
-    p.translate(0, 60, 0);
+    p.translate(0, 50, 0);
     p.rotateX(p.HALF_PI);
     p.stroke(50);
     p.strokeWeight(1);
     p.noFill();
-    for (let i = -3; i <= 3; i++) {
-        p.line(i * 20, -60, i * 20, 60);
-        p.line(-60, i * 20, 60, i * 20);
+    for (let i = -2; i <= 2; i++) {
+        p.line(i * 15, -30, i * 15, 30);
+        p.line(-30, i * 15, 30, i * 15);
     }
     p.pop();
     
     p.strokeWeight(2);
     p.stroke(255, 80, 80);
-    p.line(0, 0, 0, 50, 0, 0);
+    p.line(0, 0, 0, 35, 0, 0);
     p.stroke(80, 255, 80);
-    p.line(0, 0, 0, 0, -50, 0);
+    p.line(0, 0, 0, 0, -35, 0);
     p.stroke(80, 80, 255);
-    p.line(0, 0, 0, 0, 0, 50);
+    p.line(0, 0, 0, 0, 0, 35);
     
     p.push();
     p.rotateY(-heading);
     p.rotateZ(pitch);
     p.rotateX(roll);
     
-    p.fill(70, 120, 170);
-    p.stroke(100, 150, 200);
+    p.fill(boxColor[0], boxColor[1], boxColor[2]);
+    p.stroke(strokeColor[0], strokeColor[1], strokeColor[2]);
     p.strokeWeight(1);
-    p.box(50, 12, 30);
+    p.box(35, 10, 22);
     
     p.push();
-    p.translate(0, -8, 0);
+    p.translate(0, -7, 0);
     p.fill(255, 80, 80);
     p.noStroke();
-    p.box(10, 2, 10);
+    p.box(8, 2, 8);
     p.pop();
     
     p.push();
-    p.translate(30, 0, 0);
+    p.translate(22, 0, 0);
     p.rotateZ(-p.HALF_PI);
     p.fill(255, 200, 80);
     p.noStroke();
-    p.cone(6, 12);
+    p.cone(5, 10);
     p.pop();
     
+    p.pop();
+    
+    // Hand label
+    p.push();
+    p.translate(-p.width/2, -p.height/2);
+    p.fill(150);
+    p.textSize(10);
+    p.textAlign(p.CENTER);
+    let labelX = hand === 'right' ? 60 : 220;
+    p.text(hand === 'right' ? 'R' : 'L', p.width/2 + labelX, 125);
     p.pop();
 }
 
 function drawBrightnessGraph(p, section) {
-    let gx = 280;
+    let gx = 380;
     let gy = 200;
-    let gw = 220;
-    let gh = 100;
+    let gw = 280;
+    let gh = 160;
     
     // Background
     p.fill(40);
@@ -275,34 +421,57 @@ function drawBrightnessGraph(p, section) {
         p.line(gx, y, gx + gw, y);
     }
     
-    // Brightness line
-    if (section.brightnessHistory.length > 1) {
+    // Right hand brightness line (green)
+    if (section.brightnessHistoryRight.length > 1) {
         p.stroke(100, 255, 150);
         p.strokeWeight(2);
         p.noFill();
         p.beginShape();
-        for (let i = 0; i < section.brightnessHistory.length; i++) {
-            let x = p.map(i, 0, section.brightnessHistory.length - 1, gx, gx + gw);
-            let y = p.map(section.brightnessHistory[i], 0, 255, gy + gh, gy);
+        for (let i = 0; i < section.brightnessHistoryRight.length; i++) {
+            let x = p.map(i, 0, section.brightnessHistoryRight.length - 1, gx, gx + gw);
+            let y = p.map(section.brightnessHistoryRight[i], 0, 255, gy + gh, gy);
             p.vertex(x, y);
         }
         p.endShape();
     }
     
-    // Current brightness indicator
-    if (section.brightnessHistory.length > 0) {
-        let lastBrightness = section.brightnessHistory[section.brightnessHistory.length - 1];
-        let y = p.map(lastBrightness, 0, 255, gy + gh, gy);
-        p.fill(100, 255, 150);
-        p.noStroke();
-        p.ellipse(gx + gw, y, 8, 8);
+    // Left hand brightness line (orange)
+    if (section.brightnessHistoryLeft.length > 1) {
+        p.stroke(255, 180, 100);
+        p.strokeWeight(2);
+        p.noFill();
+        p.beginShape();
+        for (let i = 0; i < section.brightnessHistoryLeft.length; i++) {
+            let x = p.map(i, 0, section.brightnessHistoryLeft.length - 1, gx, gx + gw);
+            let y = p.map(section.brightnessHistoryLeft[i], 0, 255, gy + gh, gy);
+            p.vertex(x, y);
+        }
+        p.endShape();
     }
     
-    // Label
-    p.fill(150);
+    // Current brightness indicators
+    if (section.brightnessHistoryRight.length > 0) {
+        let lastR = section.brightnessHistoryRight[section.brightnessHistoryRight.length - 1];
+        let yR = p.map(lastR, 0, 255, gy + gh, gy);
+        p.fill(100, 255, 150);
+        p.noStroke();
+        p.ellipse(gx + gw, yR, 8, 8);
+    }
+    if (section.brightnessHistoryLeft.length > 0) {
+        let lastL = section.brightnessHistoryLeft[section.brightnessHistoryLeft.length - 1];
+        let yL = p.map(lastL, 0, 255, gy + gh, gy);
+        p.fill(255, 180, 100);
+        p.noStroke();
+        p.ellipse(gx + gw, yL, 6, 6);
+    }
+    
+    // Labels
+    p.fill(100, 255, 150);
     p.textSize(10);
     p.textAlign(p.LEFT);
-    p.text('Brightness', gx, gy - 3);
+    p.text('R', gx + 5, gy + 12);
+    p.fill(255, 180, 100);
+    p.text('L', gx + 20, gy + 12);
 }
 
 function bindSectionEvents(section) {
@@ -317,7 +486,7 @@ function bindSectionEvents(section) {
     });
     
     el.querySelector('.nav-next').addEventListener('click', () => {
-        if (section.currentPage < 1) {
+        if (section.currentPage < 2) {
             section.currentPage++;
             updateSectionPage(section);
         }
@@ -325,12 +494,20 @@ function bindSectionEvents(section) {
     
     el.querySelector('.play-btn').addEventListener('click', () => {
         section.isPlaying = !section.isPlaying;
+        if (section.isPlaying) {
+            // Calculate playStartTime based on current frame position
+            let currentFrameMs = timestampToMs(section.dataRight[section.currentIndex].timestamp);
+            let firstFrameMs = timestampToMs(section.dataRight[0].timestamp);
+            let offsetMs = currentFrameMs - firstFrameMs;
+            section.playStartTime = Date.now() - offsetMs;
+        }
         el.querySelector('.play-btn').textContent = section.isPlaying ? 'Pause' : 'Play';
     });
     
     el.querySelector('.reset-btn').addEventListener('click', () => {
         section.currentIndex = 0;
         section.isPlaying = false;
+        section.playStartTime = 0;
         el.querySelector('.play-btn').textContent = 'Play';
         updateSectionDisplay(section);
     });
@@ -364,58 +541,87 @@ function bindSectionEvents(section) {
 }
 
 function updateSectionDisplay(section) {
-    let d = section.data[section.currentIndex];
     let el = section.element;
     
-    el.querySelector('.valX').textContent = d.x.toFixed(2);
-    el.querySelector('.valY').textContent = d.y.toFixed(2);
-    el.querySelector('.valZ').textContent = d.z.toFixed(2);
-    el.querySelector('.valTime').textContent = d.timestamp;
+    // Right hand data
+    let dR = section.dataRight[Math.min(section.currentIndex, section.dataRight.length - 1)];
+    el.querySelector('.valRX').textContent = dR.orientX.toFixed(2);
+    el.querySelector('.valRY').textContent = dR.orientY.toFixed(2);
+    el.querySelector('.valRZ').textContent = dR.orientZ.toFixed(2);
+    
+    // Left hand data
+    if (section.dataLeft.length > 0) {
+        let dL = section.dataLeft[Math.min(section.currentIndex, section.dataLeft.length - 1)];
+        el.querySelector('.valLX').textContent = dL.orientX.toFixed(2);
+        el.querySelector('.valLY').textContent = dL.orientY.toFixed(2);
+        el.querySelector('.valLZ').textContent = dL.orientZ.toFixed(2);
+    }
+    
+    el.querySelector('.valTime').textContent = dR.timestamp;
 }
 
 function parseData(section) {
     let el = section.element;
-    let textarea = el.querySelector('.serial-data');
+    let textareaRight = el.querySelector('.serial-data-right');
+    let textareaLeft = el.querySelector('.serial-data-left');
     let status = el.querySelector('.parse-status');
     
-    if (!textarea.value.trim()) {
-        status.textContent = 'No data entered';
+    function parseCSVData(rawText) {
+        let result = [];
+        rawText = rawText.trim().replace(/\n/g, '');
+        
+        // Format: timestamp,orientX,orientY,orientZ,accelX,accelY,accelZ,speed,sys,gyro,accel,mag,
+        let framePattern = /(\d{2}:\d{2}:\d{2}\.\d{3}),([-\d.]+),([-\d.]+),([-\d.]+),([-\d.]+),([-\d.]+),([-\d.]+),([-\d.]+),(\d+),(\d+),(\d+),(\d+),/g;
+        let match;
+        
+        while ((match = framePattern.exec(rawText)) !== null) {
+            result.push({
+                timestamp: match[1],
+                orientX: parseFloat(match[2]),
+                orientY: parseFloat(match[3]),
+                orientZ: parseFloat(match[4]),
+                accelX: parseFloat(match[5]),
+                accelY: parseFloat(match[6]),
+                accelZ: parseFloat(match[7]),
+                speed: parseFloat(match[8]),
+                calSys: parseInt(match[9]),
+                calGyro: parseInt(match[10]),
+                calAccel: parseInt(match[11]),
+                calMag: parseInt(match[12])
+            });
+        }
+        return result;
+    }
+    
+    let rightData = textareaRight && textareaRight.value.trim() ? parseCSVData(textareaRight.value) : [];
+    let leftData = textareaLeft && textareaLeft.value.trim() ? parseCSVData(textareaLeft.value) : [];
+    
+    if (rightData.length === 0 && leftData.length === 0) {
+        status.textContent = 'No valid data found';
         return;
     }
     
-    let lines = textarea.value.trim().split('\n');
-    let newData = [];
+    // If only one hand has data, use it for both (or keep empty)
+    section.dataRight = rightData.length > 0 ? rightData : JSON.parse(JSON.stringify(defaultData));
+    section.dataLeft = leftData.length > 0 ? leftData : [];
     
-    for (let line of lines) {
-        let match = line.match(/(\d+:\d+:\d+\.\d+)\s*->\s*X:\s*([-\d.]+)\s*Y:\s*([-\d.]+)\s*Z:\s*([-\d.]+)/);
-        if (match) {
-            newData.push({
-                timestamp: match[1],
-                x: parseFloat(match[2]),
-                y: parseFloat(match[3]),
-                z: parseFloat(match[4])
-            });
-        }
-    }
-    
-    if (newData.length > 0) {
-        section.data = newData;
-        section.currentIndex = 0;
-        section.isPlaying = false;
-        el.querySelector('.play-btn').textContent = 'Play';
-        updateSectionDisplay(section);
-        status.textContent = newData.length + ' points loaded';
-    } else {
-        status.textContent = 'No valid data found';
-    }
+    section.currentIndex = 0;
+    section.isPlaying = false;
+    el.querySelector('.play-btn').textContent = 'Play';
+    updateSectionDisplay(section);
+    status.textContent = `R:${rightData.length} L:${leftData.length} points`;
 }
 
 function clearData(section) {
     let el = section.element;
-    el.querySelector('.serial-data').value = '';
+    let textareaRight = el.querySelector('.serial-data-right');
+    let textareaLeft = el.querySelector('.serial-data-left');
+    if (textareaRight) textareaRight.value = '';
+    if (textareaLeft) textareaLeft.value = '';
     el.querySelector('.parse-status').textContent = '';
     
-    section.data = JSON.parse(JSON.stringify(defaultData));
+    section.dataRight = JSON.parse(JSON.stringify(defaultData));
+    section.dataLeft = [];
     section.currentIndex = 0;
     section.isPlaying = false;
     el.querySelector('.play-btn').textContent = 'Play';
@@ -454,53 +660,110 @@ function addNewSection() {
                         <button class="reset-btn">Reset</button>
                     </div>
                     <div class="info-display">
-                        <div class="value-box vx">X: <span class="valX">--</span></div>
-                        <div class="value-box vy">Y: <span class="valY">--</span></div>
-                        <div class="value-box vz">Z: <span class="valZ">--</span></div>
+                        <div class="value-box vx">RX: <span class="valRX">--</span></div>
+                        <div class="value-box vy">RY: <span class="valRY">--</span></div>
+                        <div class="value-box vz">RZ: <span class="valRZ">--</span></div>
+                        <div class="value-box vx2">LX: <span class="valLX">--</span></div>
+                        <div class="value-box vy2">LY: <span class="valLY">--</span></div>
+                        <div class="value-box vz2">LZ: <span class="valLZ">--</span></div>
                         <div class="value-box vt">T: <span class="valTime">--</span></div>
                     </div>
                     <div class="canvas-container"></div>
                     <div class="legend">
-                        <span><span class="legend-color" style="background:#ff6464;"></span>X</span>
-                        <span><span class="legend-color" style="background:#64c8c8;"></span>Y</span>
-                        <span><span class="legend-color" style="background:#ffe664;"></span>Z</span>
+                        <span><span class="legend-color" style="background:#ff6464;"></span>RX</span>
+                        <span><span class="legend-color" style="background:#64c8c8;"></span>RY</span>
+                        <span><span class="legend-color" style="background:#ffe664;"></span>RZ</span>
+                        <span><span class="legend-color" style="background:#ff9696;"></span>LX</span>
+                        <span><span class="legend-color" style="background:#96dada;"></span>LY</span>
+                        <span><span class="legend-color" style="background:#fff096;"></span>LZ</span>
                     </div>
-                    <div class="data-input">
-                        <h4>Paste Serial Data</h4>
-                        <textarea class="serial-data" placeholder="15:56:37.663 -> X: 215.3125Y: 6.8750Z: -5.0625"></textarea>
-                        <div class="input-buttons">
-                            <button class="parse-btn">Load Data</button>
-                            <button class="clear-btn">Clear</button>
+                    <div class="data-input-dual">
+                        <div class="data-input-half">
+                            <h4>Right Hand</h4>
+                            <textarea class="serial-data-right" placeholder="00:00:02.349,356.81,26.94,-77.00,1.02,-0.93,0.61,0.24,0,0,0,0,"></textarea>
                         </div>
-                        <div class="parse-status"></div>
+                        <div class="data-input-half">
+                            <h4>Left Hand</h4>
+                            <textarea class="serial-data-left" placeholder="00:00:02.349,356.81,26.94,-77.00,1.02,-0.93,0.61,0.24,0,0,0,0,"></textarea>
+                        </div>
                     </div>
+                    <div class="input-buttons">
+                        <button class="parse-btn">Load Data</button>
+                        <button class="clear-btn">Clear</button>
+                    </div>
+                    <div class="parse-status"></div>
                 </div>
                 
                 <!-- Page 1: Heatmap View -->
                 <div class="section-page heatmap-view">
                     <div class="heatmap-grid">
-                        <div class="heatmap-panel" data-axis="x">
-                            <h4>X Axis</h4>
+                        <div class="heatmap-panel" data-axis="rx">
+                            <h4>Right X</h4>
                             <div class="heatmap-canvas"></div>
                             <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
                         </div>
-                        <div class="heatmap-panel" data-axis="y">
-                            <h4>Y Axis</h4>
+                        <div class="heatmap-panel" data-axis="ry">
+                            <h4>Right Y</h4>
                             <div class="heatmap-canvas"></div>
                             <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
                         </div>
-                        <div class="heatmap-panel" data-axis="z">
-                            <h4>Z Axis</h4>
+                        <div class="heatmap-panel" data-axis="rz">
+                            <h4>Right Z</h4>
                             <div class="heatmap-canvas"></div>
                             <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
                         </div>
-                        <div class="heatmap-panel" data-axis="xyz">
-                            <h4>XYZ Magnitude</h4>
+                        <div class="heatmap-panel" data-axis="rxyz">
+                            <h4>Right XYZ</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                        <div class="heatmap-panel left-panel" data-axis="lx">
+                            <h4>Left X</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                        <div class="heatmap-panel left-panel" data-axis="ly">
+                            <h4>Left Y</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                        <div class="heatmap-panel left-panel" data-axis="lz">
+                            <h4>Left Z</h4>
+                            <div class="heatmap-canvas"></div>
+                            <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
+                        </div>
+                        <div class="heatmap-panel left-panel" data-axis="lxyz">
+                            <h4>Left XYZ</h4>
                             <div class="heatmap-canvas"></div>
                             <div class="heatmap-legend"><span class="hm-min">-</span><div class="hm-gradient"></div><span class="hm-max">-</span></div>
                         </div>
                     </div>
                     <div class="heatmap-tooltip"></div>
+                </div>
+                
+                <!-- Page 2: Magnitude View -->
+                <div class="section-page magnitude-view">
+                    <h4 class="magnitude-title">XYZ Magnitude Timeline</h4>
+                    <div class="magnitude-container">
+                        <div class="magnitude-panel magnitude-right">
+                            <h4>Right Hand</h4>
+                            <div class="magnitude-canvas"></div>
+                        </div>
+                        <div class="magnitude-panel magnitude-left">
+                            <h4>Left Hand</h4>
+                            <div class="magnitude-canvas"></div>
+                        </div>
+                    </div>
+                    <div class="magnitude-info">
+                        <span class="mag-frame">Frame: <span class="mag-frame-num">0</span></span>
+                        <span class="mag-right-val">R: <span class="mag-r">--</span></span>
+                        <span class="mag-left-val">L: <span class="mag-l">--</span></span>
+                    </div>
+                    <div class="magnitude-legend">
+                        <span class="mag-low">Low</span>
+                        <div class="mag-gradient"></div>
+                        <span class="mag-high">High</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -518,32 +781,109 @@ function updateSectionPage(section) {
     let el = section.element;
     let mainView = el.querySelector('.main-view');
     let heatmapView = el.querySelector('.heatmap-view');
+    let magnitudeView = el.querySelector('.magnitude-view');
     let navPrev = el.querySelector('.nav-prev');
     let navNext = el.querySelector('.nav-next');
     let indicator = el.querySelector('.section-page-indicator');
     
+    // Hide all pages
+    mainView.classList.remove('active');
+    heatmapView.classList.remove('active');
+    if (magnitudeView) magnitudeView.classList.remove('active');
+    
     if (section.currentPage === 0) {
         mainView.classList.add('active');
-        heatmapView.classList.remove('active');
         navPrev.disabled = true;
         navNext.disabled = false;
         indicator.textContent = 'Main';
-    } else {
-        mainView.classList.remove('active');
+    } else if (section.currentPage === 1) {
         heatmapView.classList.add('active');
         navPrev.disabled = false;
-        navNext.disabled = true;
+        navNext.disabled = false;
         indicator.textContent = 'Heatmap';
-        
-        // Initialize heatmaps for this section
         initSectionHeatmaps(section);
+    } else if (section.currentPage === 2) {
+        if (magnitudeView) magnitudeView.classList.add('active');
+        navPrev.disabled = false;
+        navNext.disabled = true;
+        indicator.textContent = 'Magnitude';
+        initMagnitudeView(section);
     }
+}
+
+// Magnitude View Functions
+function initMagnitudeView(section) {
+    let el = section.element;
+    
+    // Clear existing magnitude instances
+    if (section.magnitudeInstanceRight && section.magnitudeInstanceRight.remove) {
+        section.magnitudeInstanceRight.remove();
+    }
+    if (section.magnitudeInstanceLeft && section.magnitudeInstanceLeft.remove) {
+        section.magnitudeInstanceLeft.remove();
+    }
+    
+    let rightContainer = el.querySelector('.magnitude-right .magnitude-canvas');
+    let leftContainer = el.querySelector('.magnitude-left .magnitude-canvas');
+    
+    if (rightContainer) {
+        rightContainer.innerHTML = '';
+        section.magnitudeInstanceRight = new p5(sketch => magnitudeSketch(sketch, section, 'right'), rightContainer);
+    }
+    
+    if (leftContainer) {
+        leftContainer.innerHTML = '';
+        section.magnitudeInstanceLeft = new p5(sketch => magnitudeSketch(sketch, section, 'left'), leftContainer);
+    }
+}
+
+function magnitudeSketch(p, section, hand) {
+    let canvasWidth = 300;
+    let canvasHeight = 300;
+    
+    p.setup = function() {
+        p.createCanvas(canvasWidth, canvasHeight);
+    };
+    
+    p.draw = function() {
+        let data = hand === 'right' ? section.dataRight : section.dataLeft;
+        
+        if (data.length === 0) {
+            p.background(0);
+            p.fill(80);
+            p.textSize(12);
+            p.textAlign(p.CENTER, p.CENTER);
+            p.text('No data', canvasWidth / 2, canvasHeight / 2);
+            return;
+        }
+        
+        // Get current frame data
+        let d = data[Math.min(section.currentIndex, data.length - 1)];
+        
+        // Calculate XYZ magnitude
+        let mag = Math.sqrt(d.orientX * d.orientX + d.orientY * d.orientY + d.orientZ * d.orientZ);
+        
+        // Normalize to 0-255 (typical max around 370 for orientation)
+        let brightness = p.map(mag, 0, 400, 0, 255);
+        brightness = p.constrain(brightness, 0, 255);
+        
+        // Fill entire canvas with brightness
+        p.background(brightness);
+        
+        // Update info display
+        let el = section.element;
+        el.querySelector('.mag-frame-num').textContent = section.currentIndex;
+        if (hand === 'right') {
+            el.querySelector('.mag-r').textContent = mag.toFixed(2);
+        } else {
+            el.querySelector('.mag-l').textContent = mag.toFixed(2);
+        }
+    };
 }
 
 // Heatmap Functions for Section
 function initSectionHeatmaps(section) {
     let el = section.element;
-    let data = section.data;
     
     // Clear existing heatmap instances
     Object.values(section.heatmapInstances).forEach(instance => {
@@ -551,32 +891,65 @@ function initSectionHeatmaps(section) {
     });
     section.heatmapInstances = {};
     
-    // Create heatmaps for X, Y, Z, and XYZ
-    ['x', 'y', 'z', 'xyz'].forEach(axis => {
+    let tooltipEl = el.querySelector('.heatmap-tooltip');
+    
+    // Right hand heatmaps
+    ['rx', 'ry', 'rz', 'rxyz'].forEach(axis => {
         let panel = el.querySelector(`.heatmap-panel[data-axis="${axis}"]`);
+        if (!panel) return;
         let container = panel.querySelector('.heatmap-canvas');
         container.innerHTML = '';
         
-        let tooltipEl = el.querySelector('.heatmap-tooltip');
-        let p5Instance = new p5(sketch => heatmapSketch(sketch, data, axis, tooltipEl), container);
+        let data = section.dataRight;
+        let dataKey = axis === 'rxyz' ? 'xyz' : 'orient' + axis.charAt(1).toUpperCase();
+        let p5Instance = new p5(sketch => heatmapSketch(sketch, data, dataKey, tooltipEl, 'R'), container);
         section.heatmapInstances[axis] = p5Instance;
         
         // Update legend
         let values;
-        if (axis === 'xyz') {
-            values = data.map(d => Math.sqrt(d.x * d.x + d.y * d.y + d.z * d.z));
+        if (dataKey === 'xyz') {
+            values = data.map(d => Math.sqrt(d.orientX * d.orientX + d.orientY * d.orientY + d.orientZ * d.orientZ));
         } else {
-            values = data.map(d => d[axis]);
+            values = data.map(d => d[dataKey]);
         }
         let minVal = Math.min(...values).toFixed(1);
         let maxVal = Math.max(...values).toFixed(1);
         panel.querySelector('.hm-min').textContent = minVal;
         panel.querySelector('.hm-max').textContent = maxVal;
     });
+    
+    // Left hand heatmaps (only if data exists)
+    if (section.dataLeft.length > 0) {
+        ['lx', 'ly', 'lz', 'lxyz'].forEach(axis => {
+            let panel = el.querySelector(`.heatmap-panel[data-axis="${axis}"]`);
+            if (!panel) return;
+            let container = panel.querySelector('.heatmap-canvas');
+            container.innerHTML = '';
+            
+            let data = section.dataLeft;
+            let dataKey = axis === 'lxyz' ? 'xyz' : 'orient' + axis.charAt(1).toUpperCase();
+            let p5Instance = new p5(sketch => heatmapSketch(sketch, data, dataKey, tooltipEl, 'L'), container);
+            section.heatmapInstances[axis] = p5Instance;
+            
+            // Update legend
+            let values;
+            if (dataKey === 'xyz') {
+                values = data.map(d => Math.sqrt(d.orientX * d.orientX + d.orientY * d.orientY + d.orientZ * d.orientZ));
+            } else {
+                values = data.map(d => d[dataKey]);
+            }
+            let minVal = Math.min(...values).toFixed(1);
+            let maxVal = Math.max(...values).toFixed(1);
+            panel.querySelector('.hm-min').textContent = minVal;
+            panel.querySelector('.hm-max').textContent = maxVal;
+        });
+    }
 }
 
-function heatmapSketch(p, data, axis, tooltipEl) {
-    let cellSize = 12;
+function heatmapSketch(p, data, axis, tooltipEl, handLabel) {
+    if (data.length === 0) return;
+    
+    let cellSize = 10;
     let cols = Math.ceil(Math.sqrt(data.length * 1.5));
     let rows = Math.ceil(data.length / cols);
     let offsetX = 20;
@@ -587,7 +960,7 @@ function heatmapSketch(p, data, axis, tooltipEl) {
     // Calculate min/max for this axis
     let values = [];
     if (axis === 'xyz') {
-        values = data.map(d => Math.sqrt(d.x * d.x + d.y * d.y + d.z * d.z));
+        values = data.map(d => Math.sqrt(d.orientX * d.orientX + d.orientY * d.orientY + d.orientZ * d.orientZ));
     } else {
         values = data.map(d => d[axis]);
     }
@@ -611,7 +984,7 @@ function heatmapSketch(p, data, axis, tooltipEl) {
             
             let value;
             if (axis === 'xyz') {
-                value = Math.sqrt(data[i].x * data[i].x + data[i].y * data[i].y + data[i].z * data[i].z);
+                value = Math.sqrt(data[i].orientX * data[i].orientX + data[i].orientY * data[i].orientY + data[i].orientZ * data[i].orientZ);
             } else {
                 value = data[i][axis];
             }
@@ -644,12 +1017,13 @@ function heatmapSketch(p, data, axis, tooltipEl) {
         if (index >= 0 && index < data.length && col >= 0 && col < cols && row >= 0 && row < rows) {
             let d = data[index];
             let value;
+            let displayAxis = axis === 'xyz' ? 'XYZ' : axis.replace('orient', '');
             if (axis === 'xyz') {
-                value = Math.sqrt(d.x * d.x + d.y * d.y + d.z * d.z).toFixed(2);
+                value = Math.sqrt(d.orientX * d.orientX + d.orientY * d.orientY + d.orientZ * d.orientZ).toFixed(2);
             } else {
                 value = d[axis].toFixed(2);
             }
-            tooltipEl.textContent = `Frame ${index} | ${d.timestamp} | ${axis.toUpperCase()}: ${value}`;
+            tooltipEl.textContent = `${handLabel} | Frame ${index} | ${d.timestamp} | ${displayAxis}: ${value}`;
         }
     };
 }
