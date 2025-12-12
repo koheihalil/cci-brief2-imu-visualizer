@@ -848,7 +848,7 @@ function updateSectionPage(section) {
         if (magnitudeView) magnitudeView.classList.add('active');
         navPrev.disabled = false;
         navNext.disabled = true;
-        indicator.textContent = 'Magnitude';
+        indicator.textContent = 'Output';
         initMagnitudeView(section);
     }
 }
@@ -1214,13 +1214,35 @@ function initSectionHeatmaps(section) {
 function heatmapSketch(p, data, axis, tooltipEl, handLabel) {
     if (data.length === 0) return;
     
-    let cellSize = 10;
-    let cols = Math.ceil(Math.sqrt(data.length * 1.5));
-    let rows = Math.ceil(data.length / cols);
+    // Fixed canvas size to fit within section
+    let maxCanvasWidth = 160;
+    let maxCanvasHeight = 140;
     let offsetX = 20;
     let offsetY = 15;
-    let canvasWidth = cols * cellSize + offsetX + 10;
-    let canvasHeight = rows * cellSize + offsetY + 10;
+    
+    // Available space for cells
+    let availableWidth = maxCanvasWidth - offsetX - 10;
+    let availableHeight = maxCanvasHeight - offsetY - 10;
+    
+    // Calculate optimal grid layout to fit within bounds
+    let cols = Math.ceil(Math.sqrt(data.length * 1.5));
+    let rows = Math.ceil(data.length / cols);
+    
+    // Calculate cell size to fit within available space
+    let cellSizeW = Math.floor(availableWidth / cols);
+    let cellSizeH = Math.floor(availableHeight / rows);
+    let cellSize = Math.max(2, Math.min(cellSizeW, cellSizeH, 10)); // Min 2px, max 10px
+    
+    // Recalculate grid if cells are too small
+    if (cellSize < 4 && data.length > 100) {
+        // Increase columns to make better use of width
+        cols = Math.floor(availableWidth / 4);
+        rows = Math.ceil(data.length / cols);
+        cellSize = Math.max(2, Math.min(Math.floor(availableWidth / cols), Math.floor(availableHeight / rows), 10));
+    }
+    
+    let canvasWidth = Math.min(maxCanvasWidth, cols * cellSize + offsetX + 10);
+    let canvasHeight = Math.min(maxCanvasHeight, rows * cellSize + offsetY + 10);
     
     // Calculate min/max for this axis
     let values = [];

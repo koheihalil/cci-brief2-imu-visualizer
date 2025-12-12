@@ -387,7 +387,10 @@ body {
 .heatmap-view .heatmap-canvas {
     display: flex;
     justify-content: center;
-    min-height: 120px;
+    align-items: center;
+    height: 140px;
+    max-height: 140px;
+    overflow: hidden;
 }
 
 .heatmap-view .heatmap-legend {
